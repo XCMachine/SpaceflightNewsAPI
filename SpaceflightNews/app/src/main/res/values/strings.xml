@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Spaceflight News API</string>
+    <string name="published">Publish: </string>
+    <string name="sample_text">Sample text</string>
+</resources>
