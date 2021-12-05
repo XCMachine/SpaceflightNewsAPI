@@ -12,5 +12,5 @@ https://github.com/google/gson
 https://github.com/coil-kt/coil
 
 Programming languages used for this project:
-Java Version 1.8
-Kotlin Version 1.8
+- Java Version 1.8
+- Kotlin Version 1.8
