@@ -19,7 +19,7 @@ class SummeryActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        //Using get intent, we could get the keyword from 'getStringExtra' URL
+        //Using get intent, we could get the keyword from 'getStringExtra' URL from the main activity.
         val intent = intent
         val summaryText = intent.getStringExtra("summary")
         val imageUrlText = intent.getStringExtra("imageUrl")
