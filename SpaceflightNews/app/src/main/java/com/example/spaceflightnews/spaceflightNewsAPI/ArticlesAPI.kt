@@ -1,14 +1,10 @@
 package com.example.spaceflightnews.spaceflightNewsAPI
 
-import com.example.spaceflightnews.get.Article
-import okhttp3.Request
-import okio.Timeout
+import com.example.spaceflightnews.model.Article
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.http.GET
 
-interface SpaceflightAPI {
+interface ArticlesAPI {
     @GET("articles")
     fun getArticles(): Call<List<Article>>
 }

@@ -1,4 +1,4 @@
-package com.example.spaceflightnews.get;
+package com.example.spaceflightnews.model;
 
 public class Article {
     public String getTitle() {

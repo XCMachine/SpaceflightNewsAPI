@@ -6,9 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.spaceflightnews.get.Article
+import com.example.spaceflightnews.model.Article
 import com.example.spaceflightnews.secondaryActivities.SummeryActivity
-import com.example.spaceflightnews.spaceflightNewsAPI.SpaceflightAPI
+import com.example.spaceflightnews.spaceflightNewsAPI.ArticlesAPI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,11 +20,6 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAdapter
     private var exampleList: List<Article>? = null
-
-    //This collection of URL's are for the summary activity to have extra strings as keywords
-    private val extraSummaryURL = "summary"
-    private val extraImageURL = "imageUrl"
-    private val extraTitleURL = "title"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +47,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
             .build()
 
         //Creating the SpaceFlight interface and then assigning the same list to get the list of articles within the interface SpaceflightAPI
-        val jsonSpaceApi = retrofit.create(SpaceflightAPI::class.java)
+        val jsonSpaceApi = retrofit.create(ArticlesAPI::class.java)
         val call: Call<List<Article>> = jsonSpaceApi.getArticles()
 
         //Instead of using execute, we use enqueue to implement an interface Callback
@@ -81,6 +76,11 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
     override fun onItemClick(position: Int) {
         val summaryIntent = Intent(this, SummeryActivity::class.java)
         val clickedItem = exampleList!![position]
+
+        //This collection of URL's are for the summary activity to have extra strings as keywords
+        val extraSummaryURL = "summary"
+        val extraImageURL = "imageUrl"
+        val extraTitleURL = "title"
 
         summaryIntent.putExtra(extraTitleURL, clickedItem.title)
         summaryIntent.putExtra(extraSummaryURL, clickedItem.summary)

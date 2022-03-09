@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.spaceflightnews.get.Article
+import com.example.spaceflightnews.model.Article
+import java.util.*
 
 class RecyclerAdapter(listItems: List<Article>, var context: Context) : RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>() {
     //We are assigning the exampleList ArrayList<Articles> and connecting it with the class 'listItem' parameter
