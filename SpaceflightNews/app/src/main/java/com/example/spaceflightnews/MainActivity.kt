@@ -6,12 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.spaceflightnews.databinding.ActivityMainBinding
 import com.example.spaceflightnews.model.Article
-import com.example.spaceflightnews.secondaryActivities.SummeryActivity
+import com.example.spaceflightnews.secondaryActivities.SummaryActivity
 import com.example.spaceflightnews.spaceflightNewsAPI.ArticlesAPI
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -88,7 +86,7 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
      * we implement it's function for onItemClick with parameter 'position' type Int
      */
     override fun onItemClick(position: Int) {
-        val summaryIntent = Intent(this, SummeryActivity::class.java)
+        val summaryIntent = Intent(this, SummaryActivity::class.java)
         val clickedItem = exampleList!![position]
 
         summaryIntent.putExtra("title", clickedItem.title)

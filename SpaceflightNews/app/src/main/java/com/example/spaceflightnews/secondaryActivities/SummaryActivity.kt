@@ -2,37 +2,30 @@ package com.example.spaceflightnews.secondaryActivities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
-import android.widget.ImageView
-import android.widget.TextView
 import coil.load
-import com.example.spaceflightnews.R
+import com.example.spaceflightnews.databinding.ActivitySummeryBinding
 
-class SummeryActivity : AppCompatActivity() {
-    private lateinit var titleTextView: TextView
-    private lateinit var summeryTextView: TextView
-    private lateinit var imageUrlView: ImageView
+class SummaryActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySummeryBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_summery)
+        binding = ActivitySummeryBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
+
         val actionBar = supportActionBar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //Using get intent, we could get the keyword from 'getStringExtra' URL from the main activity.
-        val intent = intent
         val summaryText = intent.getStringExtra("summary")
         val imageUrlText = intent.getStringExtra("imageUrl")
         val titleText = intent.getStringExtra("title")
 
-        titleTextView = findViewById(R.id.articleTitleText)
-        titleTextView.text = titleText
-
-        summeryTextView = findViewById(R.id.summeryText)
-        summeryTextView.text = summaryText
-
-        imageUrlView = findViewById(R.id.imageUrl)
-        imageUrlView.load("$imageUrlText")
+        binding.articleTitleText.text = titleText
+        binding.summeryText.text = summaryText
+        binding.imageUrl.load(imageUrlText)
     }
 
     /**
