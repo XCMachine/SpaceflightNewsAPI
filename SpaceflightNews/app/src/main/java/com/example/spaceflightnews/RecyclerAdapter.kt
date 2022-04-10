@@ -9,7 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.spaceflightnews.model.Article
 import java.util.*
 
-class RecyclerAdapter(listItems: List<Article>, var context: Context) : RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>() {
+class RecyclerAdapter(
+    listItems: List<Article>,
+    var context: Context
+    ) : RecyclerView.Adapter<RecyclerAdapter.RecyclerViewHolder>() {
     //We are assigning the exampleList ArrayList<Articles> and connecting it with the class 'listItem' parameter
     private var exampleList: ArrayList<Article> = listItems as ArrayList<Article>
 

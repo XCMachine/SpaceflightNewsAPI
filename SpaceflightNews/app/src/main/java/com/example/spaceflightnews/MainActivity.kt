@@ -3,12 +3,17 @@ package com.example.spaceflightnews
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.spaceflightnews.databinding.ActivityMainBinding
 import com.example.spaceflightnews.model.Article
 import com.example.spaceflightnews.secondaryActivities.SummeryActivity
 import com.example.spaceflightnews.spaceflightNewsAPI.ArticlesAPI
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,17 +22,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
     //Getting the RecyclerView and the Adapter ready
-    private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: RecyclerAdapter
     private var exampleList: List<Article>? = null
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(LayoutInflater.from(this))
+        setContentView(binding.root)
 
-        //Connecting to it's ID from the XML
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.hasFixedSize()
+        binding.recyclerView.hasFixedSize()
 
         passJSONData()
     }
@@ -38,12 +43,19 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
      * in order to use enqueue, as we use Callback interface for response sequence.
      */
     private fun passJSONData() {
-        val baseUrl = "https://api.spaceflightnewsapi.net/v3/"
+        //OkHttp
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .build()
 
         //RetroFit
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
             .build()
 
         //Creating the SpaceFlight interface and then assigning the same list to get the list of articles within the interface SpaceflightAPI
@@ -52,14 +64,16 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
 
         //Instead of using execute, we use enqueue to implement an interface Callback
         call.enqueue(object : Callback<List<Article>> {
-            override fun onResponse(call: Call<List<Article>>, response: Response<List<Article>>) {
+            override fun onResponse(
+                call: Call<List<Article>>,
+                response: Response<List<Article>>) {
                 //We get the List of Article class as we assign a new variable to connect is as a response.
                 exampleList = response.body()
                 //We are connecting the RecyclerView to it's LayoutManager, using LinearLayoutManager and connecting to it's context.
-                recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
+                binding.recyclerView.layoutManager = LinearLayoutManager(this@MainActivity)
                 //Then we make the RecyclerAdapter class for the RecyclerView, it's parameters is the List of Article class and it's context.
                 adapter = RecyclerAdapter(exampleList!!, this@MainActivity)
-                recyclerView.adapter = adapter
+                binding.recyclerView.adapter = adapter
                 adapter.setOnItemClickListener(this@MainActivity)
             }
 
@@ -77,15 +91,14 @@ class MainActivity : AppCompatActivity(), RecyclerAdapter.OnItemClickListener {
         val summaryIntent = Intent(this, SummeryActivity::class.java)
         val clickedItem = exampleList!![position]
 
-        //This collection of URL's are for the summary activity to have extra strings as keywords
-        val extraSummaryURL = "summary"
-        val extraImageURL = "imageUrl"
-        val extraTitleURL = "title"
-
-        summaryIntent.putExtra(extraTitleURL, clickedItem.title)
-        summaryIntent.putExtra(extraSummaryURL, clickedItem.summary)
-        summaryIntent.putExtra(extraImageURL, clickedItem.imageUrl)
+        summaryIntent.putExtra("title", clickedItem.title)
+        summaryIntent.putExtra("summary", clickedItem.summary)
+        summaryIntent.putExtra("imageUrl", clickedItem.imageUrl)
 
         startActivity(summaryIntent)
+    }
+
+    companion object {
+        const val baseUrl = "https://api.spaceflightnewsapi.net/v3/"
     }
 }
